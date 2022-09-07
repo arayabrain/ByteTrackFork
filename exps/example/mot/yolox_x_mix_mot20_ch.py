@@ -5,8 +5,8 @@ import torch
 import torch.nn as nn
 import torch.distributed as dist
 
-from yolox.exp import Exp as MyExp
-from yolox.data import get_yolox_datadir
+from yolox_tracker.exp import Exp as MyExp
+from yolox_tracker.data import get_yolox_datadir
 
 class Exp(MyExp):
     def __init__(self):
@@ -31,7 +31,7 @@ class Exp(MyExp):
         self.warmup_epochs = 1
 
     def get_data_loader(self, batch_size, is_distributed, no_aug=False):
-        from yolox.data import (
+        from yolox_tracker.data import (
             MOTDataset,
             TrainTransform,
             YoloBatchSampler,
@@ -93,7 +93,7 @@ class Exp(MyExp):
         return train_loader
 
     def get_eval_loader(self, batch_size, is_distributed, testdev=False):
-        from yolox.data import MOTDataset, ValTransform
+        from yolox_tracker.data import MOTDataset, ValTransform
 
         valdataset = MOTDataset(
             data_dir=os.path.join(get_yolox_datadir(), "MOT20"),
@@ -125,7 +125,7 @@ class Exp(MyExp):
         return val_loader
 
     def get_evaluator(self, batch_size, is_distributed, testdev=False):
-        from yolox.evaluators import COCOEvaluator
+        from yolox_tracker.evaluators import COCOEvaluator
 
         val_loader = self.get_eval_loader(batch_size, is_distributed, testdev=testdev)
         evaluator = COCOEvaluator(
